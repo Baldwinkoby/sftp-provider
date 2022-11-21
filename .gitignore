@@ -1,0 +1,11 @@
+crash.log
+terraform.tfstate
+terraform.tfstate.backup
+main.tf
+
+.idea/
+vendor/
+terraform-provider-sftpgo
+.terraform/
+.terraform.lock.hcl
+dist/
