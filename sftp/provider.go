@@ -4,7 +4,6 @@ import (
 	"context"
 	"os"
 
-	"github.com/Baldwinkoby/sftp-provider/tree/master/internal/api"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
