@@ -23,6 +23,7 @@ type User struct {
 	Filters           *Filters        `tfsdk:"filters,omitempty"`
 	Filesystem        *Filesystem     `tfsdk:"filesystem,omitempty"`
 	AdditionalInfo    types.String    `tfsdk:"additional_info"`
+	LastUpdated       types.String    `tfsdk:"last_updated"`
 }
 
 type VirtualFolder struct {

@@ -4,23 +4,26 @@ import (
 	"context"
 	"os"
 
+	internal "github.com/hashicorp/terraform-provider-scaffolding-framework/internal"
+
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	//"github.com/vmihailenco/tagparser/internal"
 )
 
 // New is a helper function to simplify provider server and testing implementation.
-func New() tfsdk.Provider {
+func New() *SftpgoProvider {
 	return &SftpgoProvider{}
 }
 
 // SftpgoProvider defines the provider implementation.
 type SftpgoProvider struct {
 	configured bool
-	//client     *api_pritunl_wrapper.Client
+	client     *internal.Client
 }
 
 // Metadata returns the provider type name.
@@ -152,7 +155,7 @@ func (p *SftpgoProvider) Configure(ctx context.Context, req provider.ConfigureRe
 	tflog.Debug(ctx, "Creating SFTPGO client")
 
 	// Create a new SFTPGO client using the configuration values
-	client, err := api.NewClient(&host, &username, &password)
+	client, err := internal.NewClient(ctx, &host, &username, &password)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to Create SFTPGO API Client",
@@ -172,16 +175,14 @@ func (p *SftpgoProvider) Configure(ctx context.Context, req provider.ConfigureRe
 
 }
 
-/*
 // GetResources - Defines provider resources
-func (p *SftpgoProvider) GetResources(_ context.Context) (map[string]tfsdk.ResourceType, diag.Diagnostics) {
-	return map[string]tfsdk.ResourceType{
-		"stfpgo_user": resourceUserType{},
+func (p *SftpgoProvider) GetResources(_ context.Context) (map[string]tfsdk.Attribute, diag.Diagnostics) {
+	return map[string]tfsdk.Attribute{
+		"stfpgo_user": tfsdk.Attribute{},
 	}, nil
 }
 
 // GetDataSources - Defines provider data sources
-func (p *SftpgoProvider) GetDataSources(_ context.Context) (map[string]tfsdk.DataSourceType, diag.Diagnostics) {
-	return map[string]tfsdk.DataSourceType{}, nil
+func (p *SftpgoProvider) GetDataSources(_ context.Context) (map[string]tfsdk.Attribute, diag.Diagnostics) {
+	return map[string]tfsdk.Attribute{}, nil
 }
-*/

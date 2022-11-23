@@ -1,4 +1,4 @@
-package api
+package internal
 
 import (
 	"context"
@@ -10,6 +10,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"github.com/hashicorp/terraform-provider-scaffolding-framework/internal/models"
 )
 
 // AuthResponse
