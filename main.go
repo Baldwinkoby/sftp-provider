@@ -15,7 +15,7 @@ var (
 )
 
 func main() {
-	providerserver.Serve(context.Background(), provider.New(), providerserver.ServeOpts{
+	providerserver.Serve(context.Background(), provider.SftpgoProvider(), providerserver.ServeOpts{
 		//Name: "pritunlwrapper",
 	})
 }

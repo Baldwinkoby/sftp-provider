@@ -5,6 +5,7 @@ import (
 	//"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -149,6 +150,28 @@ func (r resourceUser) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 }
 
+func (r resourceUser) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *resourceUser
+
+	// Read Terraform prior state data into the model
+	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// If applicable, this is a great opportunity to initialize any necessary
+	// provider client data and make a call using it.
+	// httpResp, err := d.client.Do(httpReq)
+	// if err != nil {
+	//     resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read Sftpgo, got error: %s", err))
+	//     return
+	// }
+
+	// Save updated data into Terraform state
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
 // UPDATE.GO
 func (r resourceUser) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var state models.User
@@ -164,9 +187,9 @@ func (r resourceUser) Update(ctx context.Context, req resource.UpdateRequest, re
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
-// DELETE.GO
+// DELETE.GO USERS
 func (r resourceUser) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state resourceUser
+	var state models.User
 
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
@@ -175,4 +198,18 @@ func (r resourceUser) Delete(ctx context.Context, req resource.DeleteRequest, re
 		return
 	}
 
+	//Get User ID from API
+	UserID := state.Id.String()
+	//Delete Existing resource
+	err := r.p.client.DeleteUser(ctx, UserID)
+
+	if err != nil {
+		return
+	}
+	resp.State.RemoveResource(ctx)
+
+}
+
+func (r resourceUser) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
