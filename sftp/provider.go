@@ -178,7 +178,7 @@ func (p *SftpgoProvider) Configure(ctx context.Context, req provider.ConfigureRe
 // GetResources - Defines provider resources
 func (p *SftpgoProvider) GetResources(_ context.Context) (map[string]tfsdk.Attribute, diag.Diagnostics) {
 	return map[string]tfsdk.Attribute{
-		"stfpgo_user": tfsdk.Attribute{},
+		//"stfpgo_user": tfsdk.Attribute{},
 	}, nil
 }
 
