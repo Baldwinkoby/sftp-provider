@@ -2,6 +2,8 @@ package sftp
 
 import (
 	"context"
+	"time"
+
 	//"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -185,6 +187,7 @@ func (r resourceUser) Update(ctx context.Context, req resource.UpdateRequest, re
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+	state.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
 }
 
 // DELETE.GO USERS
